@@ -1,0 +1,97 @@
+# 🎓 Multithreaded University Course Enrollment System (UNIPORTAL v1.0)
+
+![C++](https://img.shields.io/badge/Language-C%2B%2B11%2B-blue?style=for-the-badge&logo=cplusplus)
+![OS Concepts](https://img.shields.io/badge/Domain-Operating%20Systems-orange?style=for-the-badge)
+![Multithreading](https://img.shields.io/badge/Concurrency-Multithreading%20%26%20Synchronization-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen?style=for-the-badge)
+
+A robust, real-time concurrent course enrollment system that applies classical **Operating System resource-allocation techniques** to solve concurrency and race condition problems in university course registration.
+
+---
+
+## 📌 Problem Overview
+
+In high-demand university enrollment, thousands of concurrent requests create **resource contention** for limited seats. Unhandled requests lead to:
+- ❌ Over-allocation of seats
+- ❌ Race conditions & data corruption
+- ❌ Deadlocks & system instability
+- ❌ Unfair request execution order
+
+---
+
+## 💡 OS Mapping & Solutions
+
+This project models the real-world registration problem into classical OS primitives:
+
+| Real-World Entity | OS Equivalent Concept | Implementation Technique |
+| :--- | :--- | :--- |
+| **Student Requests** | Processes / Threads | `std::thread` |
+| **Courses & Seats** | Shared Resources | Resource allocation matrices |
+| **Seat Protection** | Critical Section | `std::mutex` & Semaphores |
+| **Execution Order** | Scheduling | Priority Scheduling via `std::condition_variable` |
+| **System Safety** | Deadlock Avoidance | **Banker's Algorithm** |
+
+---
+
+## ✨ Key Features
+
+- **⚡ Concurrent Request Handling:** Simulates multiple students attempting simultaneous enrollment via multithreading.
+- **🛡️ Banker's Algorithm (Deadlock Avoidance):** Before granting any seat, safety checks ensure the system remains in a **SAFE state** to prevent deadlock-like scenarios.
+- **🔒 Race Condition Prevention:** Protects global student/course vectors using `std::mutex` and critical section locking.
+- **📊 Priority Scheduling:** Executes student requests based on priority level (e.g., senior students receive earlier priority execution).
+- **📋 Rule Enforcement:** Automatically enforces constraints (Max 6 total courses: 5 Departmental + 1 Elective).
+- **🎨 Interactive CLI & Web GUI (UNIPORTAL v1.0):** Includes both detailed CLI thread execution logs and a modern Web Dashboard UI for seamless user interaction.
+
+---
+
+## 🛠️ Tech Stack & System Architecture
+
+### **Core Libraries Used (C++)**
+- `<thread>` – Spawning concurrent student threads
+- `<mutex>` – Mutex lock protection for critical sections
+- `<condition_variable>` – Turn-based thread scheduling
+- `<atomic>` – Thread-safe shared atomic controls
+- `<fstream>` – File logging & persistence (`enrollments.txt`)
+
+---
+
+## 🔄 System Workflow Pipeline
+
+1. **System Initialization:** Loads courses, available seats, and student data.
+2. **Pre-Enrollment Validation:** Verifies limit rules (Max 6 courses total, max 1 elective).
+3. **Safety Check (Banker's Algorithm):** Simulates allocation matrix to verify safe state.
+4. **Thread Creation:** Spawns student threads for competing requests.
+5. **Priority Scheduling:** `condition_variable` releases highest-priority threads first.
+6. **Critical Section Execution:** Mutex lock acquired $\rightarrow$ seats updated safely $\rightarrow$ record written $\rightarrow$ lock released.
+7. **Result Output:** Thread log displayed & dashboard updated.
+
+---
+
+## 🖥️ Screenshots & Interface Showcase
+
+### 📊 Web Dashboard (UNIPORTAL v1.0)
+*Modern responsive interface displaying course catalog, priority levels, and real-time thread simulation modal.*
+
+> *(Add your Web GUI screenshots here)*
+> `![GUI Dashboard](path_to_image/dashboard.png)`
+
+### 💻 CLI Terminal Execution Log
+*Demonstrating priority execution, thread spawning, mutex locks, and Banker's safety state updates.*
+
+> *(Add your CLI screenshots here)*
+> `![CLI Execution](path_to_image/cli_output.png)`
+
+---
+
+## 🚀 How to Run locally
+
+### **Prerequisites**
+- C++11 compliant compiler (`g++`, Clang, or MSVC)
+
+### **Compilation (C++ Engine)**
+```bash
+# Compile with POSIX threads support
+g++ -std=c++11 -pthread main.cpp -o EnrollmentSystem
+
+# Run the executable
+./EnrollmentSystem
